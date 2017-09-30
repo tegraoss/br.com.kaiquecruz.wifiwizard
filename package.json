@@ -1,0 +1,25 @@
+{
+  "name": "br.com.kaiquecruz.wifiwizard",
+  "version": "0.2.12",
+  "description": "This plugin allows Phonegap applications to manage Wifi connections.",
+  "cordova": {
+    "id": "br.com.kaiquecruz.wifiwizard",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaiquecruz/WifiWizard.git"
+  },
+  "keywords": [
+    "phonegap",
+    "network",
+    "wifi",
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "Matt Parsons",
+  "license": "Apache 2.0",
+  "homepage": "https://github.com/kaiquecruz/wifiwizard#readme"
+}
