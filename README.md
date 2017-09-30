@@ -1,10 +1,8 @@
 # WifiWizard
 
-Version 0.2.10
+Version 0.2.12
 
-`getCurrentBSSID` now available on IOS.
-
-~~Fixed callback issue with `connectNetwork`.~~
+~~add function 'saveEapConfig' to connect on a autheticate with EAP-TLS protocol.~~
 
 Updated permissions for Android Marshmallow.
 
@@ -12,19 +10,23 @@ Version 0.2.9
 
 This Phonegap plugin enables WiFi management from within Phonegap applications.
 
-iOS has limited functionality, as Apple's WifiManager equivalent is only available as a private API. Any app that used these features would not be allowed on the app store. The only function availabe for iOS is `getCurrentSSID`.
+no suport for iOS
 
 ### Installation
 
 #### Master
 
-Run `phonegap plugin install https://github.com/danishin/WifiWizard.git`. Please note that the plugin is in active development, and this will pull the most recent commits.
+Run `phonegap plugin install https://github.com/kaiquecruz/br.com.kaiquecruz.wifiwizard.git`. Please note that the plugin is in active development, and this will pull the most recent commits.
 
 #### Releases
 
-Run `cordova plugin add wifiwizard`. This will get the latest release of the plugin.
+Run `cordova plugin add br.com.kaiquecruz.wifiwizard`. This will get the latest release of the plugin.
 
 ### Usage from within Cordova/Phonegap:
+
+#### `WifiWizard.saveEapConfig(SSID, username, password, win, fail);` 
+
+Connects the phone to the given Wifi network. Returns the value of the Supplicant State. Suport for EAP-TLS protocol. 
 
 #### `WifiWizard.formatWifiConfig(SSID, password, algorithm);` 
 

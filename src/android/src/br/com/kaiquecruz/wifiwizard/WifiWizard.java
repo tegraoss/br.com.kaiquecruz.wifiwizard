@@ -786,7 +786,7 @@ public class WifiWizard extends CordovaPlugin {
                 wcAdhocFreq.setInt(selectedConfig, freq); 
             } catch (Exception e) {
                 e.printStackTrace();
-                callbackContext.error(SSID_Name + " error connection.");
+                callbackContext.error(data.getString(0) + " error connection.");
                 return false;
             }
 
@@ -794,7 +794,7 @@ public class WifiWizard extends CordovaPlugin {
             // TODO Auto-generated catch block
             // FIXME As above, what should I do here?
             e.printStackTrace();
-            callbackContext.error(SSID_Name + " error connection.");
+            callbackContext.error(data.getString(0) + " error connection.");
             return false;
         }
 
@@ -809,7 +809,7 @@ public class WifiWizard extends CordovaPlugin {
         boolean d = wifiManag.enableNetwork(res, true);   
         Log.d("WifiPreference", "enableNetwork returned " + d );  
 
-        callbackContext.success(SSID_Name + " successfully added.");
+        callbackContext.success(data.getString(0) + " successfully added.");
         return true;
     }
 }
