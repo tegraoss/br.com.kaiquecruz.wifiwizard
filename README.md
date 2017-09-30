@@ -1,1 +1,0 @@
-# br.com.kaiquecruz.wifiwizard
