@@ -1,6 +1,6 @@
 # WifiWizard
 
-Version 0.2.12
+Version 0.3.0
 
 ~~add function 'saveEapConfig' to connect on a autheticate with EAP-TLS protocol.~~
 
