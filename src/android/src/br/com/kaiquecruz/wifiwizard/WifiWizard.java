@@ -15,6 +15,8 @@
 package br.com.kaiquecruz.wifiwizard;
 
 import org.apache.cordova.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -48,6 +50,16 @@ public class WifiWizard extends CordovaPlugin {
     private static final String SET_WIFI_ENABLED = "setWifiEnabled";
     private static final String SAVE_EAP_CONFIG = "saveEapConfig";
     private static final String TAG = "WifiWizard";
+
+    private static final String INT_PRIVATE_KEY = "private_key";
+    private static final String INT_PHASE2 = "phase2";
+    private static final String INT_PASSWORD = "password";
+    private static final String INT_IDENTITY = "identity";
+    private static final String INT_EAP = "eap";
+    private static final String INT_CLIENT_CERT = "client_cert";
+    private static final String INT_CA_CERT = "ca_cert";
+    private static final String INT_ANONYMOUS_IDENTITY = "anonymous_identity";
+    final String INT_ENTERPRISEFIELD_NAME = "android.net.wifi.WifiConfiguration$EnterpriseField";
     
     private WifiManager wifiManager;
     private CallbackContext callbackContext;
@@ -105,7 +117,7 @@ public class WifiWizard extends CordovaPlugin {
             return this.getConnectedBSSID(callbackContext);
         }
         else if(action.equals(SAVE_EAP_CONFIG)) {
-            return this.saveEapConfig(callbackContext);
+            return this.saveEapConfig(callbackContext, data);
         }
         else {
             callbackContext.error("Incorrect action parameter: " + action);
@@ -766,8 +778,8 @@ public class WifiWizard extends CordovaPlugin {
             }
             /*Engine fields*/
             if(!noEnterpriseFieldType) {
-                wcefSetValue.invoke(wcefEngine.get(wifiConf), "1");
-                wcefSetValue.invoke(wcefEngineId.get(wifiConf), "keystore");
+                wcefSetValue.invoke(wcefEngine.get(selectedConfig), "1");
+                wcefSetValue.invoke(wcefEngineId.get(selectedConfig), "keystore");
             }
 
             // Adhoc for CM6
