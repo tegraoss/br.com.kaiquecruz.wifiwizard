@@ -611,29 +611,37 @@ public class WifiWizard extends CordovaPlugin {
     
 
     private boolean saveEapConfig(CallbackContext callbackContext, JSONArray data) {
-        WifiConfiguration con = new WifiConfiguration();
-        con = setWifiConfigurations(con, data.getString(0), data.getString(1), data.getString(2));
+        try {
+            WifiConfiguration con = new WifiConfiguration();
+            con = this.setWifiConfigurations(con, data.getString(0), data.getString(1), data.getString(2));
 
-        boolean res1 = wifiManag.setWifiEnabled(true);
-        int networkId = wifiManager.addNetwork(con);
-        boolean b = wifiManager.enableNetwork(networkId, true);
-        boolean isWifiConnected = wifiManager.isWifiEnabled();
-        Log.d("Wifi Connection", "Wifi Connected: " + isWifiConnected);
-        System.out.println("Wifi Connected: " + isWifiConnected);
-        System.out.println("Wifi Info: " + wifiManager.getConnectionInfo());
-        System.out.println("Wifi enterpriseConfig info: " + con.enterpriseConfig);
+            boolean res1 = wifiManager.setWifiEnabled(true);
+            int networkId = wifiManager.addNetwork(con);
+            boolean b = wifiManager.enableNetwork(networkId, true);
+            boolean isWifiConnected = wifiManager.isWifiEnabled();
+            Log.d("Wifi Connection", "Wifi Connected: " + isWifiConnected);
+            System.out.println("Wifi Connected: " + isWifiConnected);
+            System.out.println("Wifi Info: " + wifiManager.getConnectionInfo());
+            System.out.println("Wifi enterpriseConfig info: " + con.enterpriseConfig);
 
-        if(!res1 || networkId == -1 || !b || !isWifiConnected) {
-            callbackContext.error("Sem Conexão!");
+            if(!res1 || networkId == -1 || !b || !isWifiConnected) {
+                callbackContext.error("Sem Conexão!");
+                return false;
+            }
+            else {
+                callbackContext.success("Conectado com sucesso!");
+                return true;
+            }
+        } catch (Exception e) {
+            callbackContext.error(e.getMessage());
             return false;
         }
-        else {
-            callbackContext.success("Conectado com sucesso!");
-        }
+        
+        return false;
     }
 
 
-    public WifiConfiguration setWifiConfigurations(WifiConfiguration wifiConfig, String SSID, String userName, String userPass) {
+    public WifiConfiguration setWifiConfigurations(WifiConfiguration wifiConfig, String mySSID, String userName, String userPass) {
 
         final String INT_PRIVATE_KEY = "private_key";
         final String INT_PHASE2 = "phase2";
@@ -653,7 +661,7 @@ public class WifiWizard extends CordovaPlugin {
         /*define basic configuration settings*/
 
         /*Access Point*/
-        wifiConfig.SSID = SSID;
+        wifiConfig.SSID = mySSID;
 
         /*Priority*/
         wifiConfig.priority = 0;
