@@ -701,180 +701,180 @@ public class WifiWizard extends CordovaPlugin {
         wifiConfig.enterpriseConfig = enterpriseConfig;
 
 
-        /*Set Enterprise Settings Using Reflection*/
-        try {
-            Class<?> wifiEnterpriseField = null;
-            Class<?> wifiIpAssignmentField = null;
-            Class<?> wifiProxySettingsField = null;
+        // /*Set Enterprise Settings Using Reflection*/
+        // try {
+        //     Class<?> wifiEnterpriseField = null;
+        //     Class<?> wifiIpAssignmentField = null;
+        //     Class<?> wifiProxySettingsField = null;
 
-            boolean enterpriseFieldType = true;
-            boolean ipAssignmentFieldType = true;
-            boolean proxySettingsFieldType = true;
+        //     boolean enterpriseFieldType = true;
+        //     boolean ipAssignmentFieldType = true;
+        //     boolean proxySettingsFieldType = true;
 
-            Field anonymousId = null, caCert = null, clientCert = null, eap = null, identity = null, password = null, phase2 = null, privateKey = null, ipAssignment = null, proxy = null;
+        //     Field anonymousId = null, caCert = null, clientCert = null, eap = null, identity = null, password = null, phase2 = null, privateKey = null, ipAssignment = null, proxy = null;
 
-            Method setValue = null;
-            Method setIpName = null;
-            Method setProxy = null;
-            Class<?>[] wifiClasses = WifiConfiguration.class.getClasses();
+        //     Method setValue = null;
+        //     Method setIpName = null;
+        //     Method setProxy = null;
+        //     Class<?>[] wifiClasses = WifiConfiguration.class.getClasses();
 
-            /*Get Enterprise/IP Assignment/Proxy Setting Field Class to Modify*/
-            for(Class<?> wifiClass : wifiClasses) {
-                if(wifiClass.getName().equals(INT_ENTERPRISEFIELD_NAME)) {
-                    wifiEnterpriseField = wifiClass;
-                }
-                else if(wifiClass.getName().equals(INT_IPASSIGNMENT)) {
-                    wifiIpAssignmentField = wifiClass;
-                }
-                else if(wifiClass.getName().equals(INT_PROXY_SETTINGS)) {
-                    wifiProxySettingsField = wifiClass;
-                }
-            }
+        //     /*Get Enterprise/IP Assignment/Proxy Setting Field Class to Modify*/
+        //     for(Class<?> wifiClass : wifiClasses) {
+        //         if(wifiClass.getName().equals(INT_ENTERPRISEFIELD_NAME)) {
+        //             wifiEnterpriseField = wifiClass;
+        //         }
+        //         else if(wifiClass.getName().equals(INT_IPASSIGNMENT)) {
+        //             wifiIpAssignmentField = wifiClass;
+        //         }
+        //         else if(wifiClass.getName().equals(INT_PROXY_SETTINGS)) {
+        //             wifiProxySettingsField = wifiClass;
+        //         }
+        //     }
 
-            /*Certain OS (Cupcake & Doughnut) access the enterprise field directly*/
-            if(wifiEnterpriseField == null) {
-                enterpriseFieldType = false;
-            }
-            if(wifiIpAssignmentField == null) {
-                ipAssignmentFieldType = false;
-            }
-            if(wifiProxySettingsField == null) {
-                proxySettingsFieldType = false;
-            }
+        //     /*Certain OS (Cupcake & Doughnut) access the enterprise field directly*/
+        //     if(wifiEnterpriseField == null) {
+        //         enterpriseFieldType = false;
+        //     }
+        //     if(wifiIpAssignmentField == null) {
+        //         ipAssignmentFieldType = false;
+        //     }
+        //     if(wifiProxySettingsField == null) {
+        //         proxySettingsFieldType = false;
+        //     }
 
-            /*Get Fields*/
-            Log.d("Enterprise Setting", "Getting Fields ");
-            Field[] wifiFields = WifiConfiguration.class.getFields();
-            for(Field wifiField : wifiFields) {
-                if(wifiField.getName().equals(INT_ANONYMOUS_IDENTITY)) {
-                    anonymousId = wifiField;
-                    Log.d("Enterprise Setting", "INT_ANONYMOUS_IDENTITY: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_CA_CERT)) {
-                    caCert = wifiField;
-                    Log.d("Enterprise Setting", "INT_CA_CERT: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_CLIENT_CERT))
-                {
-                    clientCert = wifiField;
-                    Log.d("Enterprise Setting", "INT_CLIENT_CERT: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_EAP)) {
-                    eap = wifiField;
-                    Log.d("Enterprise Setting", "INT_EAP: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_IDENTITY)) {
-                    identity = wifiField;
-                    Log.d("Enterprise Setting", "INT_IDENTITY: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_PASSWORD)) {
-                    password = wifiField;
-                    Log.d("Enterprise Setting", "INT_PASSWORD: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_PHASE2)) {
-                    phase2 = wifiField;
-                    Log.d("Enterprise Setting", "INT_PHASE2: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_PRIVATE_KEY)) {
-                    privateKey = wifiField;
-                    Log.d("Enterprise Setting", "INT_PRIVATE_KEY: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_IP_ASSIGNMENT)) {
-                    ipAssignment = wifiField;
-                    Log.d("Enterprise Setting", "INT_IP_ASSIGNMENT: " + wifiField);
-                }
-                else if(wifiField.getName().equals(INT_PROXY_SETTINGS)) {
-                    proxy = wifiField;
-                    Log.d("Enterprise Setting", "INT_PROXY_SETTINGS 1: " + wifiField);
-                }
+        //     /*Get Fields*/
+        //     Log.d("Enterprise Setting", "Getting Fields ");
+        //     Field[] wifiFields = WifiConfiguration.class.getFields();
+        //     for(Field wifiField : wifiFields) {
+        //         if(wifiField.getName().equals(INT_ANONYMOUS_IDENTITY)) {
+        //             anonymousId = wifiField;
+        //             Log.d("Enterprise Setting", "INT_ANONYMOUS_IDENTITY: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_CA_CERT)) {
+        //             caCert = wifiField;
+        //             Log.d("Enterprise Setting", "INT_CA_CERT: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_CLIENT_CERT))
+        //         {
+        //             clientCert = wifiField;
+        //             Log.d("Enterprise Setting", "INT_CLIENT_CERT: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_EAP)) {
+        //             eap = wifiField;
+        //             Log.d("Enterprise Setting", "INT_EAP: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_IDENTITY)) {
+        //             identity = wifiField;
+        //             Log.d("Enterprise Setting", "INT_IDENTITY: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_PASSWORD)) {
+        //             password = wifiField;
+        //             Log.d("Enterprise Setting", "INT_PASSWORD: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_PHASE2)) {
+        //             phase2 = wifiField;
+        //             Log.d("Enterprise Setting", "INT_PHASE2: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_PRIVATE_KEY)) {
+        //             privateKey = wifiField;
+        //             Log.d("Enterprise Setting", "INT_PRIVATE_KEY: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_IP_ASSIGNMENT)) {
+        //             ipAssignment = wifiField;
+        //             Log.d("Enterprise Setting", "INT_IP_ASSIGNMENT: " + wifiField);
+        //         }
+        //         else if(wifiField.getName().equals(INT_PROXY_SETTINGS)) {
+        //             proxy = wifiField;
+        //             Log.d("Enterprise Setting", "INT_PROXY_SETTINGS 1: " + wifiField);
+        //         }
 
-                else {
-                    Log.d("Enterprise Setting", "INT_PROXY_SETTINGS 2: " + wifiField);
-                }
+        //         else {
+        //             Log.d("Enterprise Setting", "INT_PROXY_SETTINGS 2: " + wifiField);
+        //         }
 
-            }
+        //     }
 
-            /*Get method to set value of enterprise fields*/
-            if(enterpriseFieldType) {
-                for(Method method : wifiEnterpriseField.getMethods()) {
-                    Log.d("Get Methods", "Enterprise Method: " + method);
-                    if(method.getName().trim().equals("setValue")) {
-                        setValue = method;
-                        break;
-                    }
-                }
-            }
+        //     /*Get method to set value of enterprise fields*/
+        //     if(enterpriseFieldType) {
+        //         for(Method method : wifiEnterpriseField.getMethods()) {
+        //             Log.d("Get Methods", "Enterprise Method: " + method);
+        //             if(method.getName().trim().equals("setValue")) {
+        //                 setValue = method;
+        //                 break;
+        //             }
+        //         }
+        //     }
 
-            /*Get method to set value of IP Assignment fields*/
-            if(ipAssignmentFieldType) {
-                for(Method method : wifiIpAssignmentField.getMethods()) {
-                    Log.d("Get Methods", "IP Method: " + method);
-                    if(method.getName().trim().equals("setName")) {
-                        setIpName = method;
-                        break;
-                    }
-                }
-            }
+        //     /*Get method to set value of IP Assignment fields*/
+        //     if(ipAssignmentFieldType) {
+        //         for(Method method : wifiIpAssignmentField.getMethods()) {
+        //             Log.d("Get Methods", "IP Method: " + method);
+        //             if(method.getName().trim().equals("setName")) {
+        //                 setIpName = method;
+        //                 break;
+        //             }
+        //         }
+        //     }
 
-            /*Get method to set value of IP Assignment fields*/
-            if(proxySettingsFieldType) {
-                for(Method method : wifiProxySettingsField.getMethods()) {
-                    Log.d("Get Methods", "Proxy Method: " + method);
-                    if(method.getName().trim().equals("setName")) {
-                        setProxy = method;
-                        break;
-                    }
-                }
-            }
-            /*Set EAP*/
-         /*   if(enterpriseFieldType) {
-                setValue.invoke(eap.get(wifiConfig), ENTERPRISE_EAP);
-                Log.d("Enterprise Setting", "ENTERPRISE_EAP " + ENTERPRISE_EAP);
-            }
-            else {
-                eap.set(wifiConfig, ENTERPRISE_EAP);
-            }*/
+        //     /*Get method to set value of IP Assignment fields*/
+        //     if(proxySettingsFieldType) {
+        //         for(Method method : wifiProxySettingsField.getMethods()) {
+        //             Log.d("Get Methods", "Proxy Method: " + method);
+        //             if(method.getName().trim().equals("setName")) {
+        //                 setProxy = method;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     /*Set EAP*/
+        //  /*   if(enterpriseFieldType) {
+        //         setValue.invoke(eap.get(wifiConfig), ENTERPRISE_EAP);
+        //         Log.d("Enterprise Setting", "ENTERPRISE_EAP " + ENTERPRISE_EAP);
+        //     }
+        //     else {
+        //         eap.set(wifiConfig, ENTERPRISE_EAP);
+        //     }*/
 
-            /*Set Identity*/
-         /*   if(enterpriseFieldType) {
-                setValue.invoke(identity.get(wifiConfig), userName);
-                Log.d("Enterprise Setting", "userName " + userName);
-            }
-            else {
-                identity.set(wifiConfig, userName);
-            }*/
+        //     /*Set Identity*/
+        //  /*   if(enterpriseFieldType) {
+        //         setValue.invoke(identity.get(wifiConfig), userName);
+        //         Log.d("Enterprise Setting", "userName " + userName);
+        //     }
+        //     else {
+        //         identity.set(wifiConfig, userName);
+        //     }*/
 
-            /*Set user password*/
-          /*  if(enterpriseFieldType) {
-                setValue.invoke(password.get(wifiConfig), userPass);
-                Log.d("Enterprise Setting", "userPass " + userPass);
-            }
-            else {
-                password.set(wifiConfig, userPass);
-            }*/
+        //     /*Set user password*/
+        //   /*  if(enterpriseFieldType) {
+        //         setValue.invoke(password.get(wifiConfig), userPass);
+        //         Log.d("Enterprise Setting", "userPass " + userPass);
+        //     }
+        //     else {
+        //         password.set(wifiConfig, userPass);
+        //     }*/
 
-            /*Set IP Protocol*/
-          /*  if(ipAssignmentFieldType) {
-                ipAssignment.set(ipAssignment.get(wifiConfig), Enum.valueOf((Class<Enum>) ipAssignment.getType().asSubclass(Enum.class), "DHCP"));
-                //ipAssignment.set(wifiConfig, "DHCP");
-                Log.d("Enterprise Setting", "ipAssignment " + ipAssignment);
-            }
-            else {
-                ipAssignment.set(wifiConfig, "DHCP");
-            }*/
+        //     /*Set IP Protocol*/
+        //   /*  if(ipAssignmentFieldType) {
+        //         ipAssignment.set(ipAssignment.get(wifiConfig), Enum.valueOf((Class<Enum>) ipAssignment.getType().asSubclass(Enum.class), "DHCP"));
+        //         //ipAssignment.set(wifiConfig, "DHCP");
+        //         Log.d("Enterprise Setting", "ipAssignment " + ipAssignment);
+        //     }
+        //     else {
+        //         ipAssignment.set(wifiConfig, "DHCP");
+        //     }*/
 
-            /*Set Proxy Protocol*/
-         /*   if(proxySettingsFieldType) {
-                setProxy.invoke(proxy.get(wifiConfig), "NONE");
-                Log.d("Enterprise Setting", "proxy " + proxy);
-            }
-            else {
-                proxy.set(wifiConfig, "NONE");
-            }*/
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+        //     /*Set Proxy Protocol*/
+        //  /*   if(proxySettingsFieldType) {
+        //         setProxy.invoke(proxy.get(wifiConfig), "NONE");
+        //         Log.d("Enterprise Setting", "proxy " + proxy);
+        //     }
+        //     else {
+        //         proxy.set(wifiConfig, "NONE");
+        //     }*/
+        // }
+        // catch(Exception e) {
+        //     e.printStackTrace();
+        // }
 
         return wifiConfig;
     }
