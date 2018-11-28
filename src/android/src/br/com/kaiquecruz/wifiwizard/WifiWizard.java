@@ -614,7 +614,7 @@ public class WifiWizard extends CordovaPlugin {
         try {
             WifiConfiguration con = new WifiConfiguration();
             con = this.setWifiConfigurations(con, data.getString(0), data.getString(1), data.getString(2));
-
+            callbackContext.error(con);
             boolean res1 = wifiManager.setWifiEnabled(true);
             int networkId = wifiManager.addNetwork(con);
             boolean b = wifiManager.enableNetwork(networkId, true);
