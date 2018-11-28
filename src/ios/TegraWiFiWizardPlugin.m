@@ -18,17 +18,17 @@ static NSString *const kErrorMessageNotSupportedIOSVersion  = @"not supported iO
 @implementation TegraWiFiWizardPlugin
 
 - (void)connect:(CDVInvokedUrlCommand *)command {
-    
+
 #if TARGET_OS_SIMULATOR
     CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotIOSDevice + kErrorCodeOffset) message:kErrorMessageNotIOSDevice];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    
+
 #else
     if (@available(iOS 11.0, *)) {
         NSString *ssid = [command argumentAtIndex:0 withDefault:@""];
         NSString *passphrase = [command argumentAtIndex:1 withDefault:@""];
         NEHotspotConfiguration *configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid passphrase:passphrase isWEP:NO];
-        
+
         [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
             if (error) {
                 CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(error.code + kErrorCodeOffset) message:error.localizedDescription];
@@ -38,34 +38,74 @@ static NSString *const kErrorMessageNotSupportedIOSVersion  = @"not supported iO
                 [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
             }
         }];
-        
+
     } else {
         CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotSupportedIOSVersion + kErrorCodeOffset) message:kErrorMessageNotSupportedIOSVersion];
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     }
-    
+
+#endif
+}
+
+- (void)saveEapConfig:(CDVInvokedUrlCommand *)command {
+
+#if TARGET_OS_SIMULATOR
+    CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotIOSDevice + kErrorCodeOffset) message:kErrorMessageNotIOSDevice];
+    [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+
+#else
+    if (@available(iOS 11.0, *)) {
+        NSString *ssid = [command argumentAtIndex:0 withDefault:@""];
+
+        NEHotspotEAPSettings *settings = [[NEHotspotEAPSettings alloc]init];
+
+        settings.supportedEAPTypes = [NSArray arrayWithObjects:[NSNumber numberWithInteger:NEHotspotConfigurationEAPTypeEAPPEAP], nil];
+        settings.password = [command argumentAtIndex:2 withDefault:@""];
+        settings.username = [command argumentAtIndex:1 withDefault:@""];
+        settings.trustedServerNames = @[@"ubuntu"];
+        settings.outerIdentity = [command argumentAtIndex:1 withDefault:@""];
+        // [settings setTrustedServerCertificates:@[@"ubuntu"]];
+
+        NSString *passphrase = [command argumentAtIndex:2 withDefault:@""];
+        NEHotspotConfiguration *configuration = [[NEHotspotConfiguration alloc] initWithSSID:ssid eapSettings:settings];
+
+        [[NEHotspotConfigurationManager sharedManager] applyConfiguration:configuration completionHandler:^(NSError * _Nullable error) {
+            if (error) {
+                CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(error.code + kErrorCodeOffset) message:error.localizedDescription];
+                [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+            } else {
+                CDVPluginResult *result = [self p_createPluginOKResultWithSSID:ssid passphrase:passphrase];
+                [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+            }
+        }];
+
+    } else {
+        CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotSupportedIOSVersion + kErrorCodeOffset) message:kErrorMessageNotSupportedIOSVersion];
+        [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }
+
 #endif
 }
 
 - (void)disconnect:(CDVInvokedUrlCommand *)command {
-    
+
 #if TARGET_OS_SIMULATOR
     CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotIOSDevice + kErrorCodeOffset) message:kErrorMessageNotIOSDevice];
     [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-    
+
 #else
     if (@available(iOS 11.0, *)) {
         NSString *ssid = [command argumentAtIndex:0 withDefault:@""];
         [[NEHotspotConfigurationManager sharedManager] removeConfigurationForSSID:ssid];
-        
+
         CDVPluginResult *result = [self p_createPluginOKResultWithSSID:ssid];
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
-        
+
     } else {
         CDVPluginResult *result = [self p_createPluginErrorResultWithCode:(TegraWiFiWizardPluginErrorNotSupportedIOSVersion + kErrorCodeOffset) message:kErrorMessageNotSupportedIOSVersion];
         [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     }
-    
+
 #endif
 }
 
