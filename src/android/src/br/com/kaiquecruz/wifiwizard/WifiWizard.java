@@ -624,8 +624,20 @@ public class WifiWizard extends CordovaPlugin {
             System.out.println("Wifi Info: " + wifiManager.getConnectionInfo());
             System.out.println("Wifi enterpriseConfig info: " + con.enterpriseConfig);
 
-            if(!res1 || networkId == -1 || !b || !isWifiConnected) {
-                callbackContext.error("Sem Conexão!");
+            if(!res1) {
+                callbackContext.error("Wifi Failed to Enable!");
+                return false;
+            }
+            if(networkId == -1) {
+                callbackContext.error("Failed to Add Network!");
+                return false;
+            }
+            if (!b) {
+                callbackContext.error("Failed to Enable Networj!");
+                return false;
+            }
+            if (!isWifiConnected) {
+                callbackContext.error("Wifi Not Connected!");
                 return false;
             }
             else {
