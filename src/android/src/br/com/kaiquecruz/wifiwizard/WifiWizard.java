@@ -628,15 +628,15 @@ public class WifiWizard extends CordovaPlugin {
                 callbackContext.error("Wifi Failed to Enable!");
                 return false;
             }
-            if(networkId == -1) {
+            else if(networkId == -1) {
                 callbackContext.error("Failed to Add Network!");
                 return false;
             }
-            if (!b) {
+            else if (!b) {
                 callbackContext.error("Failed to Enable Networj!");
                 return false;
             }
-            if (!isWifiConnected) {
+            else if (!isWifiConnected) {
                 callbackContext.error("Wifi Not Connected!");
                 return false;
             }
