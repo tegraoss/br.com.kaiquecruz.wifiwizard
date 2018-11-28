@@ -87,6 +87,19 @@ var WifiWizard = {
     },
 
     /**
+     * Connects to Wi-Fi access point.
+     *
+     * @param ssid {String} SSID of Wi-Fi access point
+     * @param passphrase {String} passphrase of Wi-Fi access point
+     * @param successCb {Function} success callback
+     * @param failureCb {Function} failure callback
+     */
+    connect: function(ssid, passphrase, successCb, failureCb) {
+        // argscheck.checkArgs('ssFF', 'WifiWizard' + '.connect', arguments);
+        cordova.exec(successCb, failureCb, 'WifiWizard', 'connect', [ssid, passphrase]);
+    },
+
+    /**
      * This methods adds a network to the list of available networks.
      * Currently, only WPA authentication method is supported.
      *
