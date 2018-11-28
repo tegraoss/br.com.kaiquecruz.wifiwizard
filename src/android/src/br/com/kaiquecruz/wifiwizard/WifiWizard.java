@@ -697,6 +697,7 @@ public class WifiWizard extends CordovaPlugin {
         enterpriseConfig.setIdentity(userName);
         enterpriseConfig.setPassword(userPass);
         enterpriseConfig.setEapMethod(WifiEnterpriseConfig.Eap.PEAP);
+        enterpriseConfig.setCaCertificate(null)
         wifiConfig.enterpriseConfig = enterpriseConfig;
 
 
