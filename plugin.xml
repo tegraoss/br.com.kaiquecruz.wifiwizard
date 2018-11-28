@@ -35,4 +35,25 @@
 		<source-file src="src/android/src/br/com/kaiquecruz/wifiwizard/WifiWizard.java" target-dir="src/br/com/kaiquecruz/wifiwizard" />
 	</platform>
 
+	<platform name="ios">
+		<config-file target="config.xml" parent="/*">
+				<feature name="WifiWizard">
+						<param name="ios-package" value="TegraWiFiWizardPlugin" />
+				</feature>
+		</config-file>
+
+		<config-file parent="com.apple.developer.networking.HotspotConfiguration" target="*/Entitlements-Debug.plist">
+				<true />
+		</config-file>
+		<config-file parent="com.apple.developer.networking.HotspotConfiguration" target="*/Entitlements-Release.plist">
+				<true />
+		</config-file>
+
+		<header-file src="src/ios/TegraWiFiWizardPlugin.h" />
+		<source-file src="src/ios/TegraWiFiWizardPlugin.m" />
+
+		<framework src="NetworkExtension.framework" />
+
+    </platform>
+
 </plugin>
